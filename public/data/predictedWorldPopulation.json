@@ -1,0 +1,27 @@
+[
+  {
+    "label": "Africa",
+    "value": "5267",
+    "color": "#3e95cd"
+  },
+  {
+    "label": "Asia",
+    "value": "2478",
+    "color": "#8e5ea2"
+  },
+  {
+    "label": "Europe",
+    "value": "734",
+    "color": "#3cba9f"
+  },
+  {
+    "label": "Latin America",
+    "value": "784",
+    "color": "#e8c3b9"
+  },
+  {
+    "label": "North America",
+    "value": "433",
+    "color": "#c45850"
+  }
+]
