@@ -9,7 +9,7 @@ class ColumnChart {
 
     this.paddings = {
       top: this.size.height * 0.2,
-      bottom: this.size.height * 0.1,
+      bottom: this.size.height * 0.07,
       left: this.size.width * 0.01,
       right: this.size.width * 0.01,
     }
@@ -27,6 +27,7 @@ class ColumnChart {
 
     this.fontSizes = {
       title: 18,
+      label: 14,
     }
 
     this.canvas = createCanvas(this.size)
@@ -120,6 +121,7 @@ class ColumnChart {
 
     for (let i = 0; i < this.data.length; i++) {
       const { label, value, color } = this.data[i]
+
       const columnHeight = value / (maxValue / this.chartSize.height)
       const columnWidth = this.chartSize.width / values.length
 
@@ -129,6 +131,20 @@ class ColumnChart {
         this.chartSize.height - columnHeight + this.paddings.top,
         columnWidth - gap,
         columnHeight
+      )
+
+      const x = columnWidth * i + gap + this.paddings.left
+
+      this.ctx.fillStyle = this.colors.title
+      this.ctx.font = `${this.fontSizes.label}px serif`
+      this.ctx.textAlign = 'center'
+      this.ctx.fillText(
+        label,
+        columnWidth * i + columnWidth / 2 + this.paddings.left,
+        this.chartSize.height +
+          this.paddings.top +
+          this.paddings.bottom / 2 +
+          this.fontSizes.label / 2
       )
     }
   }
