@@ -1,3 +1,5 @@
+import { createCanvas } from './utils'
+
 class ColumnChart {
   constructor(container, { title, data, size }) {
     this.$container = container
@@ -27,21 +29,10 @@ class ColumnChart {
       title: 18,
     }
 
-    this.canvas = this.createCanvas()
+    this.canvas = createCanvas(this.size)
     this.ctx = this.canvas.getContext('2d')
 
     this.render()
-  }
-
-  createCanvas() {
-    const { height, width } = this.size
-
-    const canvas = document.createElement('canvas')
-
-    canvas.height = height
-    canvas.width = width
-
-    return canvas
   }
 
   render() {
