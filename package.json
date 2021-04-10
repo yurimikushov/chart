@@ -1,0 +1,24 @@
+{
+  "name": "chart",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel public/index.html -d build",
+    "build": "parcel build public/index.html -d build"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "prettier": "^2.2.1"
+  },
+  "bugs": {
+    "url": "https://github.com/yurimikushov/chart/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yurimikushov/chart.git"
+  },
+  "homepage": "https://github.com/yurimikushov/chart#readme",
+  "author": "Yuri Mikushov",
+  "license": "MIT"
+}
