@@ -17,6 +17,10 @@ class ColumnChart {
     this.titleColor = '#000'
     this.axisColor = '#00000050'
 
+    this.fontSize = {
+      title: 18,
+    }
+
     this.canvas = this.createCanvas()
     this.ctx = this.canvas.getContext('2d')
 
@@ -53,13 +57,16 @@ class ColumnChart {
   }
 
   drawTitle() {
-    const fontSize = 18
-    const paddingTop = 5
+    const topPadding = (this.topPadding - this.fontSize.title) / 2
 
     this.ctx.fillStyle = this.titleColor
-    this.ctx.font = `${fontSize}px serif`
+    this.ctx.font = `${this.fontSize.title}px serif`
     this.ctx.textAlign = 'center'
-    this.ctx.fillText(this.title, this.size.width / 2, fontSize + paddingTop)
+    this.ctx.fillText(
+      this.title,
+      this.size.width / 2,
+      this.fontSize.title + topPadding
+    )
   }
 
   drawYAxises() {
