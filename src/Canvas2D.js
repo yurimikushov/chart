@@ -1,6 +1,5 @@
 class Canvas2D {
-  constructor(container, size) {
-    this.$container = container
+  constructor(size) {
     this.size = size
     this.canvas = this.create()
     this.ctx = this.canvas.getContext('2d')
@@ -15,8 +14,8 @@ class Canvas2D {
     return canvas
   }
 
-  mount() {
-    this.$container.append(this.canvas)
+  mount(container) {
+    container.append(this.canvas)
   }
 
   unmount() {
@@ -28,8 +27,10 @@ class Canvas2D {
   }
 
   setBackgroundColor(color) {
+    this.ctx.save()
     this.ctx.fillStyle = color
     this.ctx.fillRect(0, 0, this.size.width, this.size.height)
+    this.ctx.restore()
   }
 
   drawText({
@@ -41,32 +42,47 @@ class Canvas2D {
     align = 'start',
     baseline = 'alphabetic',
   }) {
+    this.ctx.save()
     this.ctx.fillStyle = color
     this.ctx.font = font
     this.ctx.textAlign = align
     this.ctx.textBaseline = baseline
     this.ctx.fillText(text, x, y)
+    this.ctx.restore()
   }
 
   drawYLine({ x, y, height, color }) {
+    this.ctx.save()
     this.ctx.beginPath()
     this.ctx.moveTo(x, y)
     this.ctx.lineTo(x, height)
     this.ctx.strokeStyle = color
     this.ctx.stroke()
+    this.ctx.restore()
   }
 
   drawXLine({ x, y, width, color }) {
+    this.ctx.save()
     this.ctx.beginPath()
     this.ctx.moveTo(x, y)
     this.ctx.lineTo(width, y)
     this.ctx.strokeStyle = color
     this.ctx.stroke()
+    this.ctx.restore()
   }
 
-  drawRect({ x, y, width, height, color }) {
+  drawRect({ x, y, width, height, color, shadowBlur = 0 }) {
+    this.ctx.save()
+
+    if (0 < shadowBlur) {
+      this.ctx.shadowColor = color
+      this.ctx.shadowBlur = shadowBlur
+    }
+
     this.ctx.fillStyle = color
     this.ctx.fillRect(x, y, width, height)
+
+    this.ctx.restore()
   }
 
   getTextWidth(text, font) {
@@ -78,6 +94,10 @@ class Canvas2D {
     this.ctx.restore()
 
     return measure.width
+  }
+
+  getBoundingClientRect() {
+    return this.canvas.getBoundingClientRect()
   }
 }
 

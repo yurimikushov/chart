@@ -1,14 +1,13 @@
 import Canvas2D from './Canvas2D'
+import { throttle, isOverRect } from './utils'
 
 class ColumnChart {
-  constructor(container, { title, data, size }) {
-    this.$container = container
+  constructor({ title, data, size }) {
     this.title = title
     this.data = data
     this.size = size
 
-    this.canvas = new Canvas2D(container, size)
-    this.canvas.mount()
+    this.canvas = new Canvas2D(size)
 
     this.colors = {
       background: '#fff',
@@ -33,8 +32,33 @@ class ColumnChart {
       height: this.size.height - this.paddings.top - this.paddings.bottom,
       width: this.size.width - this.paddings.left - this.paddings.right,
     }
+  }
+
+  mount(container) {
+    this.canvas.mount(container)
+
+    this.mouse = {
+      x: -1,
+      y: -1,
+    }
+
+    this.mouseMoveHandler = throttle(({ clientX, clientY }) => {
+      this.mouse = {
+        x: clientX,
+        y: clientY,
+      }
+
+      requestAnimationFrame(this.draw.bind(this))
+    }, 42)
+
+    window.addEventListener('mousemove', this.mouseMoveHandler)
 
     this.draw()
+  }
+
+  unmount() {
+    window.removeEventListener('mousemove', this.mouseMoveHandler)
+    this.canvas.unmount()
   }
 
   draw() {
@@ -123,22 +147,41 @@ class ColumnChart {
       const columnHeight = value / (maxValue / this.chartSize.height)
       const columnWidth = this.chartSize.width / values.length
 
+      const columnX = columnWidth * i + gap / 2 + this.paddings.left
+      const columnY = this.chartSize.height - columnHeight + this.paddings.top
+
+      const { left, top } = this.canvas.getBoundingClientRect()
+
+      const isMouseOver = isOverRect(
+        this.mouse.x - left,
+        this.mouse.y - top,
+        columnX,
+        columnY,
+        columnWidth - gap,
+        columnHeight
+      )
+
       this.canvas.drawRect({
-        x: columnWidth * i + gap / 2 + this.paddings.left,
-        y: this.chartSize.height - columnHeight + this.paddings.top,
+        x: columnX,
+        y: columnY,
         width: columnWidth - gap,
         height: columnHeight,
         color,
+        shadowBlur: isMouseOver ? 10 : 0,
       })
+
+      const columnLabelX =
+        columnWidth * i + columnWidth / 2 + this.paddings.left
+      const columnLabelY =
+        this.chartSize.height +
+        this.paddings.top +
+        this.paddings.bottom / 2 +
+        this.fontSizes.label / 2
 
       this.canvas.drawText({
         text: label,
-        x: columnWidth * i + columnWidth / 2 + this.paddings.left,
-        y:
-          this.chartSize.height +
-          this.paddings.top +
-          this.paddings.bottom / 2 +
-          this.fontSizes.label / 2,
+        x: columnLabelX,
+        y: columnLabelY,
         font: `${this.fontSizes.label}px serif`,
         color: this.colors.label,
         align: 'center',
