@@ -1,0 +1,27 @@
+[
+  {
+    "label": "John",
+    "value": 10000,
+    "color": "#3e95cd"
+  },
+  {
+    "label": "Jake",
+    "value": 12000,
+    "color": "#3e95cd"
+  },
+  {
+    "label": "Peter",
+    "value": 13000,
+    "color": "#3e95cd"
+  },
+  {
+    "label": "James",
+    "value": 7000,
+    "color": "#3e95cd"
+  },
+  {
+    "label": "Mary",
+    "value": 9000,
+    "color": "#3e95cd"
+  }
+]
