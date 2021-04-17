@@ -1,21 +1,16 @@
 import Canvas2D from './Canvas2D'
-import { CHART_DEFAULT_SIZE } from './constants'
+import { CHART_DEFAULT_SIZE, CHART_DEFAULT_COLORS } from './constants'
 import { throttle, isOverRect } from './utils'
 
 class ColumnChart {
-  constructor({ title, data, size = CHART_DEFAULT_SIZE }) {
+  constructor({ title, data, size = CHART_DEFAULT_SIZE, colors }) {
     this.title = title
     this.data = data
     this.size = size
 
     this.canvas = new Canvas2D(this.size)
 
-    this.colors = {
-      background: '#fff',
-      title: '#000',
-      label: '#5c5c5c',
-      axis: '#00000050',
-    }
+    this.initColors(colors)
 
     this.fontSizes = {
       title: 18,
@@ -32,6 +27,18 @@ class ColumnChart {
     this.chartSize = {
       height: this.size.height - this.paddings.top - this.paddings.bottom,
       width: this.size.width - this.paddings.left - this.paddings.right,
+    }
+  }
+
+  initColors(colors) {
+    this.colors = { ...CHART_DEFAULT_COLORS }
+
+    if (!colors) {
+      return
+    }
+
+    for (let key in colors) {
+      this.colors[key] = colors[key]
     }
   }
 
