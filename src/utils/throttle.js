@@ -2,12 +2,12 @@ function throttle(cb, ms) {
   let lastCall = null
 
   return function (...args) {
-    if (lastCall && Date.now() - lastCall < ms) {
+    if (lastCall && performance.now() - lastCall < ms) {
       return
     }
 
     cb.apply(this, args)
-    lastCall = Date.now()
+    lastCall = performance.now()
   }
 }
 
