@@ -1,13 +1,14 @@
 import Canvas2D from './Canvas2D'
+import { CHART_DEFAULT_SIZE } from './constants'
 import { throttle, isOverRect } from './utils'
 
 class ColumnChart {
-  constructor({ title, data, size }) {
+  constructor({ title, data, size = CHART_DEFAULT_SIZE }) {
     this.title = title
     this.data = data
     this.size = size
 
-    this.canvas = new Canvas2D(size)
+    this.canvas = new Canvas2D(this.size)
 
     this.colors = {
       background: '#fff',
