@@ -1,0 +1,26 @@
+[
+  {
+    "label": "A",
+    "min": 0,
+    "max": 1000,
+    "color": "#3399CC"
+  },
+  {
+    "label": "B",
+    "min": -500,
+    "max": 2000,
+    "color": "#33CC66"
+  },
+  {
+    "label": "C",
+    "min": -1000,
+    "max": 500,
+    "color": "#CC9900"
+  },
+  {
+    "label": "D",
+    "min": -750,
+    "max": 250,
+    "color": "#FF3333"
+  }
+]

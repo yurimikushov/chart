@@ -1,11 +1,11 @@
 import Canvas2D from './Canvas2D'
 import { CHART_DEFAULT_SIZE, CHART_DEFAULT_COLORS } from './constants'
-import { throttle, isOverRect } from './utils'
+import { convertToMinMaxFormat, throttle, minMax, isOverRect } from './utils'
 
 class ColumnChart {
   constructor({ title, data, size, colors }) {
     this.title = title
-    this.data = data
+    this.data = convertToMinMaxFormat(data)
     this.initSize(size)
 
     this.canvas = new Canvas2D(this.size)
@@ -128,8 +128,8 @@ class ColumnChart {
   drawXAxises() {
     const maxLabelWidth = this.getMaxValueWidth()
     const gap = this.chartSize.height / this.data.length
-    const maxValue = Math.max(...this.data.map((column) => column.value))
-    const step = maxValue / this.data.length
+    const [minValue, maxValue] = minMax(this.data)
+    const step = (maxValue - minValue) / this.data.length
 
     for (let i = 0; i <= this.data.length; i++) {
       this.canvas.drawXLine({
@@ -156,19 +156,21 @@ class ColumnChart {
       return
     }
 
-    const values = this.data.map((column) => column.value)
-    const maxValue = Math.max(...values)
+    const [minValue, maxValue] = minMax(this.data)
 
     const gap = this.chartSize.width * 0.02
 
     for (let i = 0; i < this.data.length; i++) {
-      const { label, value, color } = this.data[i]
+      const { label, min, max, color } = this.data[i]
 
-      const columnHeight = value / (maxValue / this.chartSize.height)
-      const columnWidth = this.chartSize.width / values.length
+      const percentageOfChartHeight = (max - min) / (maxValue - minValue)
+      const columnHeight = percentageOfChartHeight * this.chartSize.height
+      const columnWidth = this.chartSize.width / this.data.length
 
       const columnX = columnWidth * i + gap / 2 + this.paddings.left
-      const columnY = this.chartSize.height - columnHeight + this.paddings.top
+      const columnY =
+        ((maxValue - max) / (maxValue - minValue)) * this.chartSize.height +
+        this.paddings.top
 
       const { left, top } = this.canvas.getBoundingClientRect()
 
@@ -215,9 +217,14 @@ class ColumnChart {
     let valueWithMaxLength = ''
 
     this.data.forEach((column) => {
-      if (maxValueLength < column.value.toString().length) {
-        valueWithMaxLength = column.value
-        maxValueLength = column.value.toString().length
+      if (maxValueLength < column.max.toString().length) {
+        valueWithMaxLength = column.max
+        maxValueLength = column.max.toString().length
+      }
+
+      if (maxValueLength < column.min.toString().length) {
+        valueWithMaxLength = column.min
+        maxValueLength = column.min.toString().length
       }
     })
 
