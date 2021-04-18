@@ -1,17 +1,10 @@
+import { createCanvas } from './utils'
+
 class Canvas2D {
   constructor(size) {
     this.size = size
-    this.canvas = this.create()
+    this.canvas = createCanvas(this.size)
     this.ctx = this.canvas.getContext('2d')
-  }
-
-  create() {
-    const canvas = document.createElement('canvas')
-
-    canvas.height = this.size.height
-    canvas.width = this.size.width
-
-    return canvas
   }
 
   mount(container) {
