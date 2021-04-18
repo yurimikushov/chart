@@ -170,49 +170,79 @@ class ColumnChart {
       const columnHeight = percentageOfChartHeight * this.chartSize.height
       const columnWidth = this.chartSize.width / this.data.length
 
-      const columnX = columnWidth * i + gap / 2 + this.paddings.left
-      const columnY =
-        ((maxValue - max) / (maxValue - minValue)) * this.chartSize.height +
-        this.paddings.top
-
-      const { left, top } = this.canvas.getBoundingClientRect()
-
-      const isMouseOver = isOverRect(
-        this.mouse.x - left,
-        this.mouse.y - top,
-        columnX,
-        columnY,
-        columnWidth - gap,
-        columnHeight
-      )
-
-      this.canvas.drawRect({
-        x: columnX,
-        y: columnY,
-        width: columnWidth - gap,
-        height: columnHeight,
+      this.drawColumn({
+        columnWidth,
+        columnHeight,
+        number: i,
+        gap,
+        maxValue,
+        minValue,
+        currentMax: max,
         color,
-        shadowBlur: isMouseOver ? 10 : 0,
       })
 
-      const columnLabelX =
-        columnWidth * i + columnWidth / 2 + this.paddings.left
-      const columnLabelY =
-        this.chartSize.height +
-        this.paddings.top +
-        this.paddings.bottom / 2 +
-        this.fontSizes.label / 2
-
-      this.canvas.drawText({
-        text: label,
-        x: columnLabelX,
-        y: columnLabelY,
-        font: `${this.fontSizes.label}px serif`,
-        color: this.colors.label,
-        align: 'center',
-        baseline: 'alphabetic',
+      this.drawColumnLabel({
+        label,
+        columnWidth,
+        number: i,
       })
     }
+  }
+
+  drawColumn({
+    columnWidth,
+    columnHeight,
+    number,
+    gap,
+    maxValue,
+    minValue,
+    currentMax,
+    color,
+  }) {
+    const columnX = columnWidth * number + gap / 2 + this.paddings.left
+    const columnY =
+      ((maxValue - currentMax) / (maxValue - minValue)) *
+        this.chartSize.height +
+      this.paddings.top
+
+    const { left, top } = this.canvas.getBoundingClientRect()
+
+    const isMouseOver = isOverRect(
+      this.mouse.x - left,
+      this.mouse.y - top,
+      columnX,
+      columnY,
+      columnWidth - gap,
+      columnHeight
+    )
+
+    this.canvas.drawRect({
+      x: columnX,
+      y: columnY,
+      width: columnWidth - gap,
+      height: columnHeight,
+      color,
+      shadowBlur: isMouseOver ? 10 : 0,
+    })
+  }
+
+  drawColumnLabel({ label, columnWidth, number }) {
+    const x = columnWidth * number + columnWidth / 2 + this.paddings.left
+    const y =
+      this.chartSize.height +
+      this.paddings.top +
+      this.paddings.bottom / 2 +
+      this.fontSizes.label / 2
+
+    this.canvas.drawText({
+      text: label,
+      x,
+      y,
+      font: `${this.fontSizes.label}px serif`,
+      color: this.colors.label,
+      align: 'center',
+      baseline: 'alphabetic',
+    })
   }
 
   getMaxWidthOfValues() {
