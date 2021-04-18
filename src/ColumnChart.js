@@ -126,12 +126,15 @@ class ColumnChart {
   }
 
   drawXAxises() {
-    const maxLabelWidth = this.getMaxValueWidth()
-    const gap = this.chartSize.height / this.data.length
-    const [minValue, maxValue] = minMax(this.data)
-    const step = (maxValue - minValue) / this.data.length
+    // FIXME: should get rid of constant number (30)
+    const xAxisesCount = Math.floor(this.chartSize.height / 30)
 
-    for (let i = 0; i <= this.data.length; i++) {
+    const maxLabelWidth = this.getMaxValueWidth()
+    const gap = this.chartSize.height / xAxisesCount
+    const [minValue, maxValue] = minMax(this.data)
+    const step = (maxValue - minValue) / xAxisesCount
+
+    for (let i = 0; i <= xAxisesCount; i++) {
       this.canvas.drawXLine({
         x: maxLabelWidth * 1.25,
         y: i * gap + this.paddings.top,
