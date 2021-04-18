@@ -6,11 +6,11 @@ class ColumnChart {
   constructor({ title, data, size, colors }) {
     this.title = title
     this.data = convertToMinMaxFormat(data)
-    this.initSize(size)
+    this.size = this.getSize(size)
 
     this.canvas = new Canvas2D(this.size)
 
-    this.initColors(colors)
+    this.colors = this.getColors(colors)
 
     this.fontSizes = {
       title: 18,
@@ -30,28 +30,32 @@ class ColumnChart {
     }
   }
 
-  initSize(size) {
-    this.size = { ...CHART_DEFAULT_SIZE }
+  getSize(size) {
+    const initialSize = { ...CHART_DEFAULT_SIZE }
 
     if (!size) {
-      return
+      return initialSize
     }
 
     for (let key in size) {
-      this.size[key] = size[key]
+      initialSize[key] = size[key]
     }
+
+    return initialSize
   }
 
-  initColors(colors) {
-    this.colors = { ...CHART_DEFAULT_COLORS }
+  getColors(colors) {
+    const initialColors = { ...CHART_DEFAULT_COLORS }
 
     if (!colors) {
-      return
+      return initialColors
     }
 
     for (let key in colors) {
-      this.colors[key] = colors[key]
+      initialColors[key] = colors[key]
     }
+
+    return initialColors
   }
 
   mount(container) {
