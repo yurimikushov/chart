@@ -20,7 +20,7 @@ class ColumnChart {
     this.paddings = {
       top: this.size.height * 0.2,
       bottom: this.size.height * 0.07,
-      left: this.size.width * 0.01 + this.getMaxValueWidth() * 1.2,
+      left: this.size.width * 0.01 + this.getMaxWidthOfValues() * 1.2,
       right: this.size.width * 0.01,
     }
 
@@ -129,7 +129,7 @@ class ColumnChart {
     // FIXME: should get rid of constant number (30)
     const xAxisesCount = Math.floor(this.chartSize.height / 30)
 
-    const maxLabelWidth = this.getMaxValueWidth()
+    const maxLabelWidth = this.getMaxWidthOfValues()
     const gap = this.chartSize.height / xAxisesCount
     const [minValue, maxValue] = minMax(this.data)
     const step = (maxValue - minValue) / xAxisesCount
@@ -215,19 +215,19 @@ class ColumnChart {
     }
   }
 
-  getMaxValueWidth() {
-    let maxValueLength = 0
+  getMaxWidthOfValues() {
+    let maxLengthOfValues = 0
     let valueWithMaxLength = ''
 
     this.data.forEach((column) => {
-      if (maxValueLength < column.max.toString().length) {
+      if (maxLengthOfValues < column.max.toString().length) {
         valueWithMaxLength = column.max
-        maxValueLength = column.max.toString().length
+        maxLengthOfValues = column.max.toString().length
       }
 
-      if (maxValueLength < column.min.toString().length) {
+      if (maxLengthOfValues < column.min.toString().length) {
         valueWithMaxLength = column.min
-        maxValueLength = column.min.toString().length
+        maxLengthOfValues = column.min.toString().length
       }
     })
 
