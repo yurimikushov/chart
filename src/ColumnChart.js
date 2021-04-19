@@ -13,8 +13,8 @@ class ColumnChart {
     this.colors = this.getColors(colors)
 
     this.fontSizes = {
-      title: 18,
-      label: 14,
+      title: this.size.height * 0.065,
+      label: this.size.height * 0.05,
     }
 
     this.paddings = {
