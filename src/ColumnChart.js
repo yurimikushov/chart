@@ -25,7 +25,7 @@ class ColumnChart {
 
     this.paddings = {
       top: this.size.height * 0.2,
-      bottom: this.size.height * 0.07,
+      bottom: this.size.height * 0.08,
       left: this.size.width * 0.01 + this.getMaxWidthOfValues() * 1.2,
       right: this.size.width * 0.01,
     }
