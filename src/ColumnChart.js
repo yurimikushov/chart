@@ -145,9 +145,7 @@ class ColumnChart {
 
     const gap = this.chartSize.width * 0.02
 
-    for (let i = 0; i < this.data.length; i++) {
-      const { label, min, max, color } = this.data[i]
-
+    this.data.forEach(({ label, min, max, color }, i) => {
       const percentageOfChartHeight = (max - min) / (maxValue - minValue)
       const columnHeight = percentageOfChartHeight * this.chartSize.height
       const columnWidth = this.chartSize.width / this.data.length
@@ -168,7 +166,7 @@ class ColumnChart {
         columnWidth,
         number: i,
       })
-    }
+    })
   }
 
   drawColumn({
